@@ -22,7 +22,7 @@ export default function Header() {
         className="w-10 h-10" // Tailwind로 크기를 조정할 경우 className 사용 가능
       />
       {/* <span>Berlin Clubs</span> */}
-      <span>TBU</span>
+      <span>Berlin Clubs</span>
     </Link>
 
           {/* 네비게이션 링크들

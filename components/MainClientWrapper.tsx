@@ -19,12 +19,30 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   };
 
   const mapClubs = clubs.map(club => {
-    const defaultCoords: [number, number] = [0, 0];
-    let coords: [number, number] = defaultCoords;
+    let coords: [number, number] = [0, 0];
 
-    if (typeof club.coordinates === 'object' && club.coordinates) {
-      const temp = club.coordinates as { lng: number; lat: number };
-      coords = [temp.lng || 0, temp.lat || 0];
+    // Supabase의 geometry 타입 처리
+    if (club.coordinates) {
+      try {
+        // JSON string인 경우 처리
+        if (typeof club.coordinates === 'string') {
+          const parsed = JSON.parse(club.coordinates);
+          coords = [
+            parsed.coordinates?.[0] || parsed.lng || 0,
+            parsed.coordinates?.[1] || parsed.lat || 0
+          ];
+        }
+        // Object인 경우 처리
+        else if (typeof club.coordinates === 'object') {
+          const temp = club.coordinates as any;
+          coords = [
+            temp.coordinates?.[0] || temp.lng || 0,
+            temp.coordinates?.[1] || temp.lat || 0
+          ];
+        }
+      } catch (error) {
+        console.error(`Failed to parse coordinates for club ${club.id}:`, error);
+      }
     }
 
     return {
@@ -36,6 +54,12 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
       price_range: club.price_range ?? 1,
       description: club.description || undefined
     };
+  });
+
+  // 유효한 좌표가 있는 클럽만 필터링
+  const validClubs = mapClubs.filter(club => {
+    const [lng, lat] = club.coordinates.coordinates;
+    return lng !== 0 && lat !== 0;
   });
 
   return (
@@ -50,7 +74,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
 
       <div className="flex-1 relative">
         <Map 
-          clubs={mapClubs}
+          clubs={validClubs}
           onClubSelect={handleClubSelect}
         />
       </div>

@@ -18,18 +18,23 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     setSelectedClubId(id);
   };
 
-  // coordinates를 [lng, lat] 배열 형식으로 변환
-  const mapClubs = clubs.map(club => ({
-    ...club,
-    coordinates: {
-      coordinates: typeof club.coordinates === 'object' && club.coordinates
-        ? [
-            (club.coordinates as { lng: number; lat: number }).lng || 0,
-            (club.coordinates as { lng: number; lat: number }).lat || 0
-          ] as [number, number]
-        : [0, 0]
+  // coordinates를 정확히 [lng, lat] 튜플 형식으로 변환
+  const mapClubs = clubs.map(club => {
+    const defaultCoords: [number, number] = [0, 0];
+    let coords: [number, number] = defaultCoords;
+
+    if (typeof club.coordinates === 'object' && club.coordinates) {
+      const temp = club.coordinates as { lng: number; lat: number };
+      coords = [temp.lng || 0, temp.lat || 0];
     }
-  }));
+
+    return {
+      ...club,
+      coordinates: {
+        coordinates: coords
+      }
+    };
+  });
 
   return (
     <div className="flex flex-1">

@@ -18,7 +18,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     setSelectedClubId(id);
   };
 
-  // coordinates를 정확히 [lng, lat] 튜플 형식으로 변환
+  // coordinates와 rating을 Map 컴포넌트에 맞게 변환
   const mapClubs = clubs.map(club => {
     const defaultCoords: [number, number] = [0, 0];
     let coords: [number, number] = defaultCoords;
@@ -32,7 +32,8 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
       ...club,
       coordinates: {
         coordinates: coords
-      }
+      },
+      rating: club.rating ?? 0  // null인 경우 0으로 변환
     };
   });
 

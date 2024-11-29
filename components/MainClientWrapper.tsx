@@ -5,11 +5,19 @@ import Map from '@/components/Map';
 import ClubList from '@/components/ClubList';
 import { Database } from '@/types/database.types';
 
-// database.types에서 Club 타입을 가져옴
-type Club = Database['public']['Tables']['clubs']['Row'];
+// 데이터베이스의 Club 타입
+type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
+
+// Map 컴포넌트를 위한 Club 타입
+interface MapClub extends Omit<DatabaseClub, 'coordinates'> {
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+}
 
 interface MainClientWrapperProps {
-  clubs: Club[];
+  clubs: DatabaseClub[];
 }
 
 export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
@@ -18,6 +26,17 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   const handleClubSelect = (id: string) => {
     setSelectedClubId(id);
   };
+
+  // coordinates 형식 변환
+  const mapClubs = clubs.map(club => ({
+    ...club,
+    coordinates: typeof club.coordinates === 'object' && club.coordinates
+      ? {
+          lat: (club.coordinates as any).lat || 0,
+          lng: (club.coordinates as any).lng || 0,
+        }
+      : { lat: 0, lng: 0 }
+  }));
 
   return (
     <div className="flex flex-1">
@@ -33,7 +52,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
       {/* 오른쪽 지도 */}
       <div className="flex-1 relative">
         <Map 
-          clubs={clubs} 
+          clubs={mapClubs}
           onClubSelect={handleClubSelect}
           selectedClubId={selectedClubId || undefined}
         />

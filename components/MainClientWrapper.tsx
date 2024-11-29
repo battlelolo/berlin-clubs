@@ -1,26 +1,12 @@
-// components/MainClientWrapper.tsx
 'use client';
 
 import { useState } from 'react';
 import Map from '@/components/Map';
 import ClubList from '@/components/ClubList';
+import { Database } from '@/types/database.types';
 
-interface Club {
-  id: string;
-  name: string;
-  description: string;
-  location: string;
-  // coordinates: any;
-  coordinates: {
-    lng: number;
-    lat: number;
-  };
-  music_types: string[];
-  rating: number;
-  price_range: number;
-  features: string[];
-  images?: string[];
-}
+// database.types에서 Club 타입을 가져옴
+type Club = Database['public']['Tables']['clubs']['Row'];
 
 interface MainClientWrapperProps {
   clubs: Club[];

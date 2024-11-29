@@ -11,6 +11,13 @@ interface MainClientWrapperProps {
   clubs: DatabaseClub[];
 }
 
+// 좌표 데이터의 가능한 형식을 정의
+interface CoordinatesObject {
+  coordinates?: [number, number];
+  lng?: number;
+  lat?: number;
+}
+
 export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
 
@@ -21,12 +28,11 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   const mapClubs = clubs.map(club => {
     let coords: [number, number] = [0, 0];
 
-    // Supabase의 geometry 타입 처리
     if (club.coordinates) {
       try {
         // JSON string인 경우 처리
         if (typeof club.coordinates === 'string') {
-          const parsed = JSON.parse(club.coordinates);
+          const parsed = JSON.parse(club.coordinates) as CoordinatesObject;
           coords = [
             parsed.coordinates?.[0] || parsed.lng || 0,
             parsed.coordinates?.[1] || parsed.lat || 0
@@ -34,10 +40,10 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
         }
         // Object인 경우 처리
         else if (typeof club.coordinates === 'object') {
-          const temp = club.coordinates as any;
+          const coordsObj = club.coordinates as CoordinatesObject;
           coords = [
-            temp.coordinates?.[0] || temp.lng || 0,
-            temp.coordinates?.[1] || temp.lat || 0
+            coordsObj.coordinates?.[0] || coordsObj.lng || 0,
+            coordsObj.coordinates?.[1] || coordsObj.lat || 0
           ];
         }
       } catch (error) {

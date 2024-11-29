@@ -5,16 +5,13 @@ import Map from '@/components/Map';
 import ClubList from '@/components/ClubList';
 import { Database } from '@/types/database.types';
 
-// 데이터베이스의 Club 타입
 type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
 
-// Map 컴포넌트를 위한 Club 타입
-interface MapClub extends Omit<DatabaseClub, 'coordinates'> {
-  coordinates: {
-    lat: number;
-    lng: number;
-  };
-}
+// coordinates 타입 명시적 정의
+type Coordinates = {
+  lat: number;
+  lng: number;
+};
 
 interface MainClientWrapperProps {
   clubs: DatabaseClub[];
@@ -32,8 +29,8 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     ...club,
     coordinates: typeof club.coordinates === 'object' && club.coordinates
       ? {
-          lat: (club.coordinates as any).lat || 0,
-          lng: (club.coordinates as any).lng || 0,
+          lat: (club.coordinates as Coordinates).lat || 0,
+          lng: (club.coordinates as Coordinates).lng || 0,
         }
       : { lat: 0, lng: 0 }
   }));

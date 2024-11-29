@@ -1,10 +1,12 @@
 // components/ClubCard.tsx
 'use client';
 
-import { Club } from '@/types/types';
+import { Database } from '@/types/database.types';
 import { Music, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';  // 추가
+import Image from 'next/image';
+
+type Club = Database['public']['Tables']['clubs']['Row'];
 
 
 interface ClubCardProps {

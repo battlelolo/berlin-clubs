@@ -1,32 +1,29 @@
-// components/auth/AuthButton.tsx
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
 import { useRouter } from 'next/navigation';
 import { UserCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
-
-import { User } from '@supabase/supabase-js';  // 상단에 추가
+import { User } from '@supabase/supabase-js';
 
 export default function AuthButton() {
   const router = useRouter();
   const supabase = createClient();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  // const [user, setUser] = useState<any>(null);
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
+      setUser(user || null);
     };
 
     fetchUser();
 
     // 인증 상태 변경 리스너
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user);
+      setUser(session?.user || null);
     });
 
     return () => {
@@ -58,9 +55,7 @@ export default function AuthButton() {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
       
-      // 로그아웃 후 페이지 새로고침
       router.refresh();
-      // 홈페이지로 리다이렉트
       router.push('/');
     } catch (error) {
       console.error('Error signing out:', error);

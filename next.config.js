@@ -8,7 +8,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: ['upload.wikimedia.org', 'imgproxy.ra.co', 'www.visitberlin.de','imgur.com'],
+    domains: ['upload.wikimedia.org', 'imgproxy.ra.co', 'www.visitberlin.de','i.imgur.com'],
   }
 };
 

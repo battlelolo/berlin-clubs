@@ -7,13 +7,6 @@ import { Database } from '@/types/database.types';
 
 type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
 
-// Map 컴포넌트에서 기대하는 Club 타입
-interface MapClub extends Omit<DatabaseClub, 'coordinates'> {
-  coordinates: {
-    coordinates: [number, number];
-  };
-}
-
 interface MainClientWrapperProps {
   clubs: DatabaseClub[];
 }
@@ -40,7 +33,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
 
   return (
     <div className="flex flex-1">
-      {/* 왼쪽 사이드바 */}
       <div className="w-1/3 bg-zinc-900 border-r border-zinc-800">
         <ClubList
           clubs={clubs}
@@ -49,7 +41,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
         />
       </div>
 
-      {/* 오른쪽 지도 */}
       <div className="flex-1 relative">
         <Map 
           clubs={mapClubs}

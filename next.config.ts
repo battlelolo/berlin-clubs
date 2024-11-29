@@ -1,26 +1,17 @@
-// import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
+import type { Configuration as WebpackConfig } from 'webpack';
 
-// const nextConfig: NextConfig = {
-//   /* config options here */
-// };
-
-// export default nextConfig;
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     appDir: true,
   },
-  webpack: (config) => {
+  webpack: (config: WebpackConfig) => {
     config.resolve.fallback = { fs: false };
     return config;
   },
-}
-
-module.exports = nextConfig
-
-module.exports = {
   images: {
-    domains: ['upload.wikimedia.org','imgproxy.ra.co','www.visitberlin.de'],
-  },
-}
+    domains: ['upload.wikimedia.org', 'imgproxy.ra.co', 'www.visitberlin.de'],
+  }
+};
+
+export default nextConfig;

@@ -37,49 +37,44 @@ export default function Map({ clubs, onClubSelect }: MapProps) {
 
     // Add markers for each club
     clubs.forEach((club) => {
-      // 커스텀 마커 요소 생성
       const el = document.createElement('div');
       el.className = 'custom-marker';
       
-      // 마커 스타일링
       el.innerHTML = `
         <div class="bg-purple-500 text-white px-2 py-1 rounded-full font-bold shadow-lg">
           ${'€'.repeat(club.price_range)}
         </div>
       `;
 
-      // 마커 클릭 이벤트
       el.addEventListener('click', () => {
         if (onClubSelect) {
           onClubSelect(club.id);
         }
       });
 
-      // 팝업 생성
       const popup = new mapboxgl.Popup({
         offset: 25,
         closeButton: false,
-        maxWidth: '300px'
+        maxWidth: '300px',
+        className: 'dark-theme-popup' // 커스텀 클래스 추가
       }).setHTML(`
         <div class="p-2">
-          <h3 class="font-bold text-lg mb-1">${club.name}</h3>
-          <p class="text-gray-600 mb-2">${club.location}</p>
+          <h3 class="font-bold text-lg mb-1 text-white">${club.name}</h3>
+          <p class="text-gray-300 mb-2">${club.location}</p>
           <div class="flex items-center gap-2">
             <span class="text-yellow-500">${'★'.repeat(Math.round(club.rating))}</span>
-            <span class="text-gray-600">${club.rating.toFixed(1)}</span>
+            <span class="text-gray-300">${club.rating.toFixed(1)}</span>
           </div>
-          ${club.description ? `<p class="text-sm mt-2">${club.description}</p>` : ''}
+          ${club.description ? `<p class="text-gray-300 text-sm mt-2">${club.description}</p>` : ''}
         </div>
       `);
 
-      // 마커 생성 및 지도에 추가
       new mapboxgl.Marker(el)
         .setLngLat(club.coordinates.coordinates)
         .setPopup(popup)
         .addTo(map);
     });
 
-    // Fit bounds to include all markers
     if (clubs.length > 0) {
       const bounds = new mapboxgl.LngLatBounds();
       clubs.forEach(club => {
@@ -102,10 +97,30 @@ export default function Map({ clubs, onClubSelect }: MapProps) {
         .custom-marker:hover {
           transform: scale(1.1);
         }
-        .mapboxgl-popup-content {
+        /* 다크 테마 팝업 스타일 */
+        .dark-theme-popup .mapboxgl-popup-content {
+          background-color: rgb(24 24 27); /* bg-zinc-900 */
           border-radius: 8px;
           padding: 0;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          color: white;
+        }
+        .dark-theme-popup .mapboxgl-popup-tip {
+          border-top-color: rgb(24 24 27) !important; /* 팝업 화살표 색상 */
+          border-bottom-color: rgb(24 24 27) !important;
+        }
+        /* 화살표 방향에 따른 스타일 */
+        .dark-theme-popup.mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+          border-bottom-color: rgb(24 24 27) !important;
+        }
+        .dark-theme-popup.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+          border-top-color: rgb(24 24 27) !important;
+        }
+        .dark-theme-popup.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+          border-right-color: rgb(24 24 27) !important;
+        }
+        .dark-theme-popup.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+          border-left-color: rgb(24 24 27) !important;
         }
       `}</style>
     </>

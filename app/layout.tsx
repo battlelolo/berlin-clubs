@@ -17,7 +17,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const _supabase = await getSupabase();
+  const supabase = await getSupabase();
 
   return (
     <html lang="en">

@@ -107,7 +107,7 @@ export default function AuthButton() {
               onClick={handleSignIn}
               className="w-full px-4 py-2 text-left text-sm hover:bg-zinc-700"
             >
-              Sign In (Google)
+              Sign In with Google
             </button>
           )}
         </div>

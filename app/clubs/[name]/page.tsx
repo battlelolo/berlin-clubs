@@ -7,7 +7,7 @@ import ReviewsSection from '@/components/reviews/ReviewsSection';
 import { Suspense } from 'react';
 import { Database } from '@/types/database.types';
 
-type Club = Database['public']['Tables']['clubs']['Row'];
+type Club = Database['public']['Tables']['clubs']['Row']['image_url'];
 
 type PageProps = {
   params: Promise<{
@@ -45,14 +45,13 @@ const ClubContent = ({ club }: { club: Club }) => {
   return (
     <div className="min-h-screen bg-zinc-900">
      <div className="relative h-96">
-  <Image
-    src={club.images?.[0] || "/api/placeholder/400/300"}
-    alt={club.name}
-    fill
-    className="object-cover"
-    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-    priority
-  />
+         <Image
+          src={club.image_url || `/api/placeholder/1200/400`}
+          alt={club.name}
+          fill
+          className="object-cover"
+          priority
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900" />
         <div className="absolute bottom-0 left-0 right-0 p-8">
           <h1 className="text-4xl font-bold text-white mb-2">{club.name}</h1>

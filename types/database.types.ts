@@ -16,6 +16,7 @@ export interface Database {
             opening_hours: any | null
             features: string[] | null
             images: string[] | null
+            image_url: string | null
             created_at: string
             updated_at: string
           }

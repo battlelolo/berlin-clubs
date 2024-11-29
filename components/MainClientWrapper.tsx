@@ -7,11 +7,12 @@ import { Database } from '@/types/database.types';
 
 type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
 
-// coordinates 타입 명시적 정의
-type Coordinates = {
-  lat: number;
-  lng: number;
-};
+// Map 컴포넌트에서 기대하는 Club 타입
+interface MapClub extends Omit<DatabaseClub, 'coordinates'> {
+  coordinates: {
+    coordinates: [number, number];
+  };
+}
 
 interface MainClientWrapperProps {
   clubs: DatabaseClub[];
@@ -24,15 +25,17 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     setSelectedClubId(id);
   };
 
-  // coordinates 형식 변환
+  // coordinates를 [lng, lat] 배열 형식으로 변환
   const mapClubs = clubs.map(club => ({
     ...club,
-    coordinates: typeof club.coordinates === 'object' && club.coordinates
-      ? {
-          lat: (club.coordinates as Coordinates).lat || 0,
-          lng: (club.coordinates as Coordinates).lng || 0,
-        }
-      : { lat: 0, lng: 0 }
+    coordinates: {
+      coordinates: typeof club.coordinates === 'object' && club.coordinates
+        ? [
+            (club.coordinates as { lng: number; lat: number }).lng || 0,
+            (club.coordinates as { lng: number; lat: number }).lat || 0
+          ] as [number, number]
+        : [0, 0]
+    }
   }));
 
   return (

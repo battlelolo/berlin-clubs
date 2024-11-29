@@ -1,11 +1,12 @@
-// components/ClubList.tsx
 'use client';
 
-import { Club } from '@/types/types';
+import { Database } from '@/types/database.types';
 import ClubCard from './ClubCard';
 import { Search } from 'lucide-react';
-// import { SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
+
+// Club 타입 정의
+type Club = Database['public']['Tables']['clubs']['Row'];
 
 interface ClubListProps {
   clubs: Club[];

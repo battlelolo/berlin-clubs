@@ -1,11 +1,9 @@
-import type { NextConfig } from 'next';
-import type { Configuration as WebpackConfig } from 'webpack';
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   experimental: {
     appDir: true,
   },
-  webpack: (config: WebpackConfig) => {
+  webpack: (config) => {
     config.resolve.fallback = { fs: false };
     return config;
   },
@@ -14,4 +12,4 @@ const nextConfig: NextConfig = {
   }
 };
 
-export default nextConfig;
+module.exports = nextConfig;

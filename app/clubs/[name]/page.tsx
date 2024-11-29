@@ -23,10 +23,7 @@ type PageProps = {
 }
 
 async function getClub(clubName: string) {
-  const cookieStore = cookies();
-  const supabase = createServerComponentClient({
-    cookies: () => cookieStore.getAll()
-  });
+  const supabase = createServerComponentClient({ cookies });
   const decodedName = decodeURIComponent(clubName);
   
   const { data: club } = await supabase

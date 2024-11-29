@@ -1,4 +1,3 @@
-// app/clubs/[name]/page.tsx
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { MapPin } from 'lucide-react';
@@ -7,7 +6,8 @@ import ReviewsSection from '@/components/reviews/ReviewsSection';
 import { Suspense } from 'react';
 import { Database } from '@/types/database.types';
 
-type Club = Database['public']['Tables']['clubs']['Row']['image_url'];
+// Club 타입 정의 수정
+type Club = Database['public']['Tables']['clubs']['Row'];
 
 type PageProps = {
   params: Promise<{
@@ -27,7 +27,7 @@ async function getClub(clubName: string) {
     .eq('name', decodedName)
     .single();
 
-  return club as Club;
+  return club;
 }
 
 export default async function ClubPage({ params }: PageProps) {
@@ -44,8 +44,8 @@ export default async function ClubPage({ params }: PageProps) {
 const ClubContent = ({ club }: { club: Club }) => {
   return (
     <div className="min-h-screen bg-zinc-900">
-     <div className="relative h-96">
-         <Image
+      <div className="relative h-96">
+        <Image
           src={club.image_url || `/api/placeholder/1200/400`}
           alt={club.name}
           fill
@@ -81,7 +81,7 @@ const ClubContent = ({ club }: { club: Club }) => {
               <div>
                 <h2 className="text-2xl font-bold text-white mb-4">Music</h2>
                 <div className="flex flex-wrap gap-2">
-                  {club.music_types.map((type: string) => (
+                  {club.music_types.map((type) => (
                     <span
                       key={type}
                       className="px-3 py-1 bg-purple-500 text-white rounded-full text-sm"
@@ -104,7 +104,6 @@ const ClubContent = ({ club }: { club: Club }) => {
     </div>
   );
 };
-
 // // app/clubs/[name]/page.tsx
 // import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 // import { cookies } from 'next/headers';

@@ -7,17 +7,17 @@ import './globals.css';
 
 export const dynamic = 'force-dynamic';
 
-async function getSupabase() {
-  const cookieStore = await cookies();
-  return createServerComponentClient({ cookies: () => cookieStore });
-}
+// async function getSupabase() {
+//   const cookieStore = await cookies();
+//   return createServerComponentClient({ cookies: () => cookieStore });
+// }
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = await getSupabase();
+  // const supabase = await getSupabase();
 
   return (
     <html lang="en">

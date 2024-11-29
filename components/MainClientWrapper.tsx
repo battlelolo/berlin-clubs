@@ -7,15 +7,14 @@ import { Database } from '@/types/database.types';
 
 type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
 
-interface MainClientWrapperProps {
-  clubs: DatabaseClub[];
-}
-
-// 좌표 데이터의 가능한 형식을 정의
 interface CoordinatesObject {
   coordinates?: [number, number];
   lng?: number;
   lat?: number;
+}
+
+interface MainClientWrapperProps {
+  clubs: DatabaseClub[];
 }
 
 export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
@@ -30,16 +29,13 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
 
     if (club.coordinates) {
       try {
-        // JSON string인 경우 처리
         if (typeof club.coordinates === 'string') {
           const parsed = JSON.parse(club.coordinates) as CoordinatesObject;
           coords = [
             parsed.coordinates?.[0] || parsed.lng || 0,
             parsed.coordinates?.[1] || parsed.lat || 0
           ];
-        }
-        // Object인 경우 처리
-        else if (typeof club.coordinates === 'object') {
+        } else if (typeof club.coordinates === 'object') {
           const coordsObj = club.coordinates as CoordinatesObject;
           coords = [
             coordsObj.coordinates?.[0] || coordsObj.lng || 0,
@@ -62,26 +58,27 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     };
   });
 
-  // 유효한 좌표가 있는 클럽만 필터링
   const validClubs = mapClubs.filter(club => {
     const [lng, lat] = club.coordinates.coordinates;
     return lng !== 0 && lat !== 0;
   });
 
   return (
-    <div className="flex flex-1">
-      <div className="w-1/3 bg-zinc-900 border-r border-zinc-800">
+    <div className="flex flex-col md:flex-row flex-1">
+      {/* 모바일에서는 지도가 위에 표시됨 */}
+      <div className="relative w-full md:w-2/3 h-[300px] md:h-full order-1 md:order-2">
+        <Map 
+          clubs={validClubs}
+          onClubSelect={handleClubSelect}
+        />
+      </div>
+
+      {/* 모바일에서는 클럽 목록이 아래에 표시됨 */}
+      <div className="w-full md:w-1/3 bg-zinc-900 border-t md:border-t-0 md:border-r border-zinc-800 order-2 md:order-1 overflow-y-auto">
         <ClubList
           clubs={clubs}
           onClubSelect={handleClubSelect}
           selectedClubId={selectedClubId || undefined}
-        />
-      </div>
-
-      <div className="flex-1 relative">
-        <Map 
-          clubs={validClubs}
-          onClubSelect={handleClubSelect}
         />
       </div>
     </div>

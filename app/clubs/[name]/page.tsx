@@ -20,7 +20,6 @@ type PageProps = {
   params: Promise<{
     name: string;
   }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 async function getClub(clubName: string) {
@@ -37,12 +36,8 @@ async function getClub(clubName: string) {
   return club as Club;
 }
 
-export default async function ClubPage({ params, searchParams }: PageProps) {
-  const [resolvedParams, resolvedSearchParams] = await Promise.all([
-    params,
-    searchParams
-  ]);
-
+export default async function ClubPage({ params }: PageProps) {
+  const resolvedParams = await params;
   const club = await getClub(resolvedParams.name);
 
   if (!club) {

@@ -3,7 +3,8 @@
 
 import { Club } from '@/types/types';
 import ClubCard from './ClubCard';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search } from 'lucide-react';
+// import { SlidersHorizontal } from 'lucide-react';
 import { useState } from 'react';
 
 interface ClubListProps {

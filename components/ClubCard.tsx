@@ -4,6 +4,8 @@
 import { Club } from '@/types/types';
 import { Music, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';  // 추가
+
 
 interface ClubCardProps {
   club: Club;
@@ -11,6 +13,28 @@ interface ClubCardProps {
   onSelect?: (id: string) => void;
 }
 
+// export default function ClubCard({ club, selected, onSelect }: ClubCardProps) {
+//   return (
+//     <Link href={`/clubs/${encodeURIComponent(club.name)}`}>
+//       <div
+//         onClick={() => onSelect?.(club.id)}
+//         className={`
+//           bg-zinc-800 rounded-lg overflow-hidden cursor-pointer 
+//           transition-all duration-200 hover:bg-zinc-700
+//           ${selected ? 'ring-2 ring-purple-500' : ''}
+//         `}
+//       >
+//         {/* 이미지 섹션 */}
+//         <div className="relative h-48">
+//           <img
+//             src={club.image_url || "/api/placeholder/400/300"}
+//             alt={club.name}
+//             className="w-full h-full object-cover"
+//           />
+//           <div className="absolute top-4 right-4 bg-purple-500 text-white px-2 py-1 rounded-full font-bold">
+//             {club.rating.toFixed(1)}
+//           </div>
+//         </div>
 export default function ClubCard({ club, selected, onSelect }: ClubCardProps) {
   return (
     <Link href={`/clubs/${encodeURIComponent(club.name)}`}>
@@ -24,12 +48,14 @@ export default function ClubCard({ club, selected, onSelect }: ClubCardProps) {
       >
         {/* 이미지 섹션 */}
         <div className="relative h-48">
-          <img
+          <Image
             src={club.image_url || "/api/placeholder/400/300"}
             alt={club.name}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
-          <div className="absolute top-4 right-4 bg-purple-500 text-white px-2 py-1 rounded-full font-bold">
+          <div className="absolute top-4 right-4 bg-purple-500 text-white px-2 py-1 rounded-full font-bold z-10">
             {club.rating.toFixed(1)}
           </div>
         </div>

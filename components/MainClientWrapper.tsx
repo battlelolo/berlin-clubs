@@ -10,7 +10,11 @@ interface Club {
   name: string;
   description: string;
   location: string;
-  coordinates: any;
+  // coordinates: any;
+  coordinates: {
+    lng: number;
+    lat: number;
+  };
   music_types: string[];
   rating: number;
   price_range: number;

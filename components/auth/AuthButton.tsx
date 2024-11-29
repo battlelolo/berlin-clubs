@@ -6,12 +6,15 @@ import { useRouter } from 'next/navigation';
 import { UserCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { User } from '@supabase/supabase-js';  // 상단에 추가
+
 export default function AuthButton() {
   const router = useRouter();
   const supabase = createClient();
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  // const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {

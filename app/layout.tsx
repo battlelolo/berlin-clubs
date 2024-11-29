@@ -12,6 +12,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head><script defer data-domain="berlin-clubs.vercel.app" src="https://plausible.io/js/script.js"></script></head>
       <body className="bg-black text-white">
         <Header />
         <main className="min-h-[calc(100vh-64px)]">

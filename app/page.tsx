@@ -5,7 +5,10 @@ import { Suspense } from 'react';
 import MainClientWrapper from '@/components/MainClientWrapper';
 
 async function getClubs() {
-  const supabase = createServerComponentClient({ cookies });
+  const cookieStore = await cookies();
+  const supabase = createServerComponentClient({
+    cookies: () => cookieStore
+  });
   
   const { data: clubs } = await supabase
     .from('clubs')

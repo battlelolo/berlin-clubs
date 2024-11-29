@@ -15,12 +15,13 @@ type PageProps = {
   }>;
 }
 
+// app/clubs/[name]/page.tsx
+
 async function getClub(clubName: string) {
   const cookieStore = await cookies();
   const supabase = createServerComponentClient({
     cookies: () => cookieStore
   });
-  
   const decodedName = decodeURIComponent(clubName);
   
   const { data: club } = await supabase

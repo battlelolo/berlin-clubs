@@ -1,9 +1,21 @@
 // app/clubs/[name]/page.tsx
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { MapPin, Music } from 'lucide-react';
+import { MapPin } from 'lucide-react'; // Music import 제거
+import Image from 'next/image'; // Image import 추가
 import ReviewsSection from '@/components/reviews/ReviewsSection';
 import { Suspense } from 'react';
+
+// Club 타입 정의 추가
+interface Club {
+  id: string;
+  name: string;
+  image_url: string;
+  location: string;
+  price_range: number;
+  description: string;
+  music_types: string[];
+}
 
 async function getSupabase() {
   const cookieStore = await cookies();
@@ -20,7 +32,7 @@ async function getClub(clubName: string) {
     .eq('name', decodedName)
     .single();
 
-  return club;
+  return club as Club;
 }
 
 interface PageProps {
@@ -40,15 +52,17 @@ export default async function ClubPage({ params }: PageProps) {
   return <ClubContent clubId={club.id} club={club} />;
 }
 
-const ClubContent = ({ club }: { club: any }) => {
+const ClubContent = ({ club }: { club: Club }) => { // any를 Club으로 변경
   return (
     <div className="min-h-screen bg-zinc-900">
       {/* 커버 이미지 섹션 */}
       <div className="relative h-96">
-        <img
+        <Image
           src={club.image_url || `/api/placeholder/1200/400`}
           alt={club.name}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-zinc-900" />
         <div className="absolute bottom-0 left-0 right-0 p-8">

@@ -18,3 +18,9 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+module.exports = {
+  images: {
+    domains: ['upload.wikimedia.org','imgproxy.ra.co','www.visitberlin.de'],
+  },
+}

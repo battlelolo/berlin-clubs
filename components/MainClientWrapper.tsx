@@ -18,7 +18,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     setSelectedClubId(id);
   };
 
-  // coordinates, rating, price_range를 Map 컴포넌트에 맞게 변환
+  // 모든 필요한 타입 변환 처리
   const mapClubs = clubs.map(club => {
     const defaultCoords: [number, number] = [0, 0];
     let coords: [number, number] = defaultCoords;
@@ -33,8 +33,9 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
       coordinates: {
         coordinates: coords
       },
-      rating: club.rating ?? 0,      // null인 경우 0으로 변환
-      price_range: club.price_range ?? 1  // null인 경우 1로 변환
+      rating: club.rating ?? 0,
+      price_range: club.price_range ?? 1,
+      description: club.description || undefined  // null을 undefined로 변환
     };
   });
 

@@ -32,6 +32,7 @@ export interface Database {
             opening_hours?: any | null
             features?: string[] | null
             images?: string[] | null
+            image_url: string  // 이 부분 추가
             created_at?: string
             updated_at?: string
           }

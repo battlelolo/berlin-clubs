@@ -64,9 +64,9 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   });
 
   return (
-    <div className="flex flex-col md:flex-row flex-1">
+    <div className="flex flex-col md:flex-row h-screen">
       {/* 모바일에서는 지도가 위에 표시됨 */}
-      <div className="relative w-full md:w-2/3 h-[300px] md:h-full order-1 md:order-2">
+      <div className="relative w-full md:w-2/3 h-[300px] md:h-[calc(100vh-64px)] order-1 md:order-2 md:sticky md:top-16">
         <Map 
           clubs={validClubs}
           onClubSelect={handleClubSelect}
@@ -74,7 +74,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
       </div>
 
       {/* 모바일에서는 클럽 목록이 아래에 표시됨 */}
-      <div className="w-full md:w-1/3 bg-zinc-900 border-t md:border-t-0 md:border-r border-zinc-800 order-2 md:order-1 overflow-y-auto">
+      <div className="w-full md:w-1/3 bg-zinc-900 border-t md:border-t-0 md:border-r border-zinc-800 order-2 md:order-1 md:h-full overflow-y-auto">
         <ClubList
           clubs={clubs}
           onClubSelect={handleClubSelect}

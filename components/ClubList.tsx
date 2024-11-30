@@ -5,7 +5,6 @@ import ClubCard from './ClubCard';
 import { Search } from 'lucide-react';
 import { useState } from 'react';
 
-// Club 타입 정의
 type Club = Database['public']['Tables']['clubs']['Row'];
 
 interface ClubListProps {
@@ -18,21 +17,22 @@ export default function ClubList({ clubs, onClubSelect, selectedClubId }: ClubLi
   const [searchTerm, setSearchTerm] = useState('');
   const [musicFilter, setMusicFilter] = useState<string | null>(null);
 
-  const filteredClubs = clubs.filter(club => {
+  // 초기 clubs 배열을 랜덤하게 섞어서 사용
+  const shuffledClubs = [...clubs].sort(() => Math.random() - 0.5);
+
+  const filteredClubs = shuffledClubs.filter(club => {
     const matchesSearch = club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          club.location.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesMusic = !musicFilter || club.music_types?.includes(musicFilter);
     return matchesSearch && matchesMusic;
   });
 
-  // 모든 음악 장르를 중복 없이 수집
   const allMusicTypes = Array.from(
     new Set(clubs.flatMap(club => club.music_types || []))
   );
 
   return (
     <div className="h-full flex flex-col">
-      {/* 검색 및 필터 */}
       <div className="p-4 border-b border-zinc-700">
         <div className="relative mb-4">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
@@ -45,7 +45,6 @@ export default function ClubList({ clubs, onClubSelect, selectedClubId }: ClubLi
           />
         </div>
 
-        {/* 음악 장르 필터 */}
         <div className="flex flex-wrap gap-2">
           {allMusicTypes.map((type) => (
             <button
@@ -62,7 +61,6 @@ export default function ClubList({ clubs, onClubSelect, selectedClubId }: ClubLi
         </div>
       </div>
 
-      {/* 클럽 리스트 */}
       <div className="flex-1 overflow-auto p-4">
         <div className="space-y-4">
           {filteredClubs.map((club) => (

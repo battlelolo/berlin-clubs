@@ -6,8 +6,11 @@ import ClubList from '@/components/ClubList';
 import { Database } from '@/types/database.types';
 import { List, X } from 'lucide-react';
 
-type DatabaseClub = Database['public']['Tables']['clubs']['Row'];
+// Database types
+type Tables = Database['public']['Tables'];
+type DatabaseClub = Tables['clubs']['Row'];
 
+// Coordinate types
 interface CoordinatesObject {
   coordinates?: [number, number];
   lng?: number;
@@ -16,8 +19,14 @@ interface CoordinatesObject {
 
 type CoordinatesInput = string | CoordinatesObject | null | undefined;
 
+// Props type
 interface MainClientWrapperProps {
   clubs: DatabaseClub[];
+}
+
+// Extended club type with known coordinates type
+interface ClubWithCoordinates extends Omit<DatabaseClub, 'coordinates'> {
+  coordinates: CoordinatesInput;
 }
 
 export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
@@ -58,7 +67,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     return [0, 0];
   };
 
-  const mapClubs = clubs.map(club => ({
+  const mapClubs = (clubs as ClubWithCoordinates[]).map(club => ({
     ...club,
     coordinates: {
       coordinates: parseCoordinates(club.coordinates)

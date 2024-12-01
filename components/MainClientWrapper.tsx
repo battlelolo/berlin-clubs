@@ -14,6 +14,8 @@ interface CoordinatesObject {
   lat?: number;
 }
 
+type CoordinatesInput = string | CoordinatesObject | null | undefined;
+
 interface MainClientWrapperProps {
   clubs: DatabaseClub[];
 }
@@ -23,7 +25,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   const [showList, setShowList] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // 클라이언트 사이드 마운트 후에만 렌더링
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -37,8 +38,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     setShowList(prev => !prev);
   };
 
-  // 좌표 변환 로직을 순수 함수로 분리
-  const parseCoordinates = (coordinates: any): [number, number] => {
+  const parseCoordinates = (coordinates: CoordinatesInput): [number, number] => {
     try {
       if (typeof coordinates === 'string') {
         const parsed = JSON.parse(coordinates) as CoordinatesObject;
@@ -46,11 +46,10 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
           parsed.coordinates?.[0] || parsed.lng || 0,
           parsed.coordinates?.[1] || parsed.lat || 0
         ];
-      } else if (typeof coordinates === 'object') {
-        const coordsObj = coordinates as CoordinatesObject;
+      } else if (coordinates && typeof coordinates === 'object') {
         return [
-          coordsObj.coordinates?.[0] || coordsObj.lng || 0,
-          coordsObj.coordinates?.[1] || coordsObj.lat || 0
+          coordinates.coordinates?.[0] || coordinates.lng || 0,
+          coordinates.coordinates?.[1] || coordinates.lat || 0
         ];
       }
     } catch (error) {
@@ -59,7 +58,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     return [0, 0];
   };
 
-  // 클럽 데이터 변환을 메모이제이션
   const mapClubs = clubs.map(club => ({
     ...club,
     coordinates: {
@@ -75,14 +73,12 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
     return lng !== 0 && lat !== 0;
   });
 
-  // 초기 마운트 전에는 null 반환
   if (!mounted) {
     return null;
   }
 
   return (
     <div className="flex flex-col md:flex-row h-screen relative">
-      {/* 모바일 토글 버튼 */}
       <button
         onClick={toggleList}
         className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-zinc-800 text-white px-6 py-2 rounded-full flex items-center gap-2 shadow-lg"
@@ -100,7 +96,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
         )}
       </button>
 
-      {/* 지도 */}
       <div className="relative w-full md:w-2/3 h-[100vh] md:h-[calc(100vh-64px)] order-1 md:order-2 md:sticky md:top-16">
         <Map 
           clubs={validClubs}
@@ -108,7 +103,6 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
         />
       </div>
 
-      {/* 클럽 리스트 */}
       <div 
         className={`
           fixed md:relative bottom-0 left-0 right-0 

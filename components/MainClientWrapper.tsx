@@ -20,7 +20,6 @@ interface MainClientWrapperProps {
 export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
 
-  // useMemo를 사용하여 클럽 데이터 처리
   const processedClubs = useMemo(() => {
     return clubs.map(club => {
       let coords: [number, number] = [0, 0];
@@ -45,15 +44,20 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
         }
       }
 
-      // 원본 데이터의 속성을 그대로 유지
       return {
         ...club,
         coordinates: {
           coordinates: coords
-        }
+        },
+        rating: club.rating ?? 0, // null인 경우 0으로 처리
+        price_range: club.price_range ?? 1,
+        description: club.description || "",
+        address: club.address || "",
+        music_types: club.music_types || [],
+        images: club.images || []
       };
     });
-  }, [clubs]); // clubs가 변경될 때만 재계산
+  }, [clubs]);
 
   const validClubs = useMemo(() => {
     return processedClubs.filter(club => {
@@ -77,7 +81,7 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
 
       <div className="w-full mt-[30vh] md:mt-0 md:w-1/3 bg-zinc-900 border-t md:border-t-0 md:border-r border-zinc-800 order-2 md:order-1 md:h-full overflow-y-auto">
         <ClubList
-          clubs={clubs} // 원본 clubs 데이터를 직접 전달
+          clubs={processedClubs}
           onClubSelect={handleClubSelect}
           selectedClubId={selectedClubId || undefined}
         />

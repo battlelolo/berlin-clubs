@@ -65,8 +65,8 @@ export default function MainClientWrapper({ clubs }: MainClientWrapperProps) {
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
-      {/* 모바일에서는 지도가 위에 표시됨 */}
-      <div className="relative w-full md:w-2/3 h-[300px] md:h-[calc(100vh-64px)] order-1 md:order-2 md:sticky md:top-16">
+      {/* 모바일에서는 지도가 위에 표시됨 - 높이를 200px로 줄임 */}
+      <div className="relative w-full md:w-2/3 h-[200px] md:h-[calc(100vh-64px)] order-1 md:order-2 md:sticky md:top-16">
         <Map 
           clubs={validClubs}
           onClubSelect={handleClubSelect}

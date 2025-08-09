@@ -1,10 +1,7 @@
-// app/page.tsx
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
-import MainClientWrapper from '@/components/MainClientWrapper';
-
-// app/page.tsx
+import Modal from '@/components/Modal';
 
 async function getClubs() {
   const supabase = createServerComponentClient({
@@ -23,7 +20,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col h-[calc(100vh-64px)]">
       <Suspense fallback={<div>Loading...</div>}>
-        <MainClientWrapper clubs={clubs} />
+        <Modal clubs={clubs} />
       </Suspense>
     </div>
   );

@@ -44,7 +44,7 @@ export default function Modal({ clubs }: ModalProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-bold text-gray-300 mb-4">Welcome!</h2>
-            <p className="text-gray-400 mb-4">Thanks for visiting! We are pausing the service at the moment, but will be back with mobile apps in 2026.</p>
+            <p className="text-gray-400 mb-4"> Thanks for visiting! We are pausing the service at the moment, but will be back with mobile apps in 2026.</p>
             <div className="flex justify-end space-x-2">
               <button
                 onClick={closeModal}

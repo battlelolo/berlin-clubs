@@ -17,10 +17,10 @@ export default function Modal({ clubs }: ModalProps) {
 
   const closeModal = () => setIsModalOpen(false);
 
-  const handleJoinWaitlist = () => {
-    alert('Thank you for joining the waitlist! We will notify you when the service is back in 2026.');
-    // 나중에 Supabase나 외부 API로 대기 목록에 등록 로직을 추가할 수 있음
-  };
+  // const handleJoinWaitlist = () => {
+  //   alert('Thank you for joining the waitlist! We will notify you when the service is back in 2026.');
+  //   // 나중에 Supabase나 외부 API로 대기 목록에 등록 로직을 추가할 수 있음
+  // };
 
   return (
     <div className="flex flex-col h-full">

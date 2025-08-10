@@ -2,16 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import MainClientWrapper from './MainClientWrapper';
+import { Database } from '@/types/database.types';
 
-// clubs 타입을 더 구체적으로 정의
-interface Club {
-  id: string | number;
-  name: string;
-  // 필요한 다른 속성들을 추가하세요
-}
+// Database types (MainClientWrapper와 동일한 타입 사용)
+type Tables = Database['public']['Tables'];
+type DatabaseClub = Tables['clubs']['Row'];
 
 interface ModalProps {
-  clubs: Club[]; // any 대신 구체적인 타입 사용
+  clubs: DatabaseClub[]; // MainClientWrapper와 동일한 타입 사용
 }
 
 export default function Modal({ clubs }: ModalProps) {
@@ -44,7 +42,7 @@ export default function Modal({ clubs }: ModalProps) {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-xl font-bold text-gray-300 mb-4">Welcome!</h2>
-            <p className="text-gray-400 mb-4"> Thanks for visiting! We are pausing the service at the moment, but will be back with mobile apps in 2026.</p>
+            <p className="text-gray-400 mb-4">Thanks for visiting! We are pausing the service at the moment, but will be back with mobile apps in 2026.</p>
             <div className="flex justify-end space-x-2">
               <button
                 onClick={closeModal}

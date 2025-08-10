@@ -3,8 +3,15 @@
 import { useState, useEffect } from 'react';
 import MainClientWrapper from './MainClientWrapper';
 
+// clubs 타입을 더 구체적으로 정의
+interface Club {
+  id: string | number;
+  name: string;
+  // 필요한 다른 속성들을 추가하세요
+}
+
 interface ModalProps {
-  clubs: any[]; // clubs 타입은 MainClientWrapper에 맞게 유지
+  clubs: Club[]; // any 대신 구체적인 타입 사용
 }
 
 export default function Modal({ clubs }: ModalProps) {
@@ -17,10 +24,9 @@ export default function Modal({ clubs }: ModalProps) {
 
   const closeModal = () => setIsModalOpen(false);
 
-  // const handleJoinWaitlist = () => {
-  //   alert('Thank you for joining the waitlist! We will notify you when the service is back in 2026.');
-  //   // 나중에 Supabase나 외부 API로 대기 목록에 등록 로직을 추가할 수 있음
-  // };
+  const handleJoinWaitlist = () => {
+    window.open('https://forms.gle/wBR8VfEd9TiHYMuHA', '_blank');
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -46,12 +52,12 @@ export default function Modal({ clubs }: ModalProps) {
               >
                 Close
               </button>
-              {/* <button
+              <button
                 onClick={handleJoinWaitlist}
-                className="px-3 py-1 bg-green-500 text-white rounded text-sm hover:bg-green-600"
+                className="px-3 py-1 bg-purple-500 text-white rounded text-sm hover:bg-purple-600"
               >
                 Join Waitlist
-              </button> */}
+              </button>
             </div>
           </div>
         </div>
